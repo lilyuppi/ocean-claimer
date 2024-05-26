@@ -1,0 +1,12 @@
+{
+  "devDependencies": {
+    "@mysten/sui.js": "^0.54.1"
+  },
+  "type": "module",
+  "dependencies": {
+    "fs": "^0.0.1-security",
+    "moment": "^2.30.1",
+    "ws": "^8.17.0",
+    "xlsx": "^0.18.5"
+  }
+}
