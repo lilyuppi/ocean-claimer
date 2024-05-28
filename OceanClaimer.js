@@ -329,17 +329,15 @@ class OceanClaimer {
         this.autoClaim,
         this.#remainingTimeToClaim + 1000
       );
-      const humanRemainingTimeToClaim = new Moment(
-        this.#nextClaimable
-      ).fromNow();
-      this.#timerUpdateRemainingTime = setInterval(
-        () =>
-          this.#eventEmitter.emit("remainingTimeToClaimChanged", {
-            address: this.#walletAddress,
-            remainingTimeToClaim: humanRemainingTimeToClaim,
-          }),
-        1000
-      );
+      this.#timerUpdateRemainingTime = setInterval(() => {
+        const humanRemainingTimeToClaim = new Moment(
+          this.#nextClaimable
+        ).fromNow();
+        this.#eventEmitter.emit("remainingTimeToClaimChanged", {
+          address: this.#walletAddress,
+          remainingTimeToClaim: humanRemainingTimeToClaim,
+        });
+      }, 1000);
       // console.log(
       //   `[${this.#walletAddress}] Next claim in ${humanRemainingTimeToClaim}.`
       // );
