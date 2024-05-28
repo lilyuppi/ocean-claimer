@@ -92,7 +92,7 @@ async function process(id, idx, seedPhrase) {
     walletAddress: oceanClaimer.walletAddress,
     message: "Syncing...",
   });
-  oceanClaimer.eventEmitter.on("synced", (data) => {
+  oceanClaimer.eventEmitter.on("synced", async (data) => {
     updateLog(id, {
       boat: data.boat,
       mesh: data.mesh,
@@ -100,6 +100,14 @@ async function process(id, idx, seedPhrase) {
       lastClaimed: data.humanLastClaimed,
       nextClaimable: data.humanNextClaimable,
       message: "Wait for next claimable!",
+    });
+    const SUIBalance = await oceanClaimer.getSUIBalance();
+    updateLog(id, {
+      SUIBalance: Number(SUIBalance / 1000000000).toFixed(2),
+    });
+    const oceanBalance = await oceanClaimer.getOceanBalance();
+    updateLog(id, {
+      oceanBalance: Number(oceanBalance / 1000000000).toFixed(2),
     });
   });
   oceanClaimer.eventEmitter.on("claiming", (data) => {
@@ -123,14 +131,6 @@ async function process(id, idx, seedPhrase) {
     });
   });
   await oceanClaimer.syncInfo();
-  const SUIBalance = await oceanClaimer.getSUIBalance();
-  updateLog(id, {
-    SUIBalance: Number(SUIBalance / 1000000000).toFixed(2),
-  });
-  const oceanBalance = await oceanClaimer.getOceanBalance();
-  updateLog(id, {
-    oceanBalance: Number(oceanBalance / 1000000000).toFixed(2),
-  });
   oceanClaimer.autoClaim();
 }
 
